@@ -26,7 +26,7 @@
       --bad: #f87171;
       --shadow: 0 20px 60px rgba(0,0,0,.45);
       --radius: 22px;
-      --theme-icon: "☀️";
+      --theme-icon-content: "☀";
       --theme-label: "Switch to light theme";
     }
 
@@ -43,7 +43,7 @@
       --good: #22c55e;
       --bad: #ef4444;
       --shadow: 0 20px 60px rgba(0,0,0,.15);
-      --theme-icon: "🌙";
+      --theme-icon-content: "☽";
       --theme-label: "Switch to dark theme";
     }
 
@@ -106,7 +106,7 @@
       border: 1px solid rgba(124,199,255,.25);
       border-radius: 12px;
       background: linear-gradient(180deg, var(--surface), var(--surface-2));
-      color: var(--text);
+      color: var(--accent);
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: 18px;
@@ -116,12 +116,18 @@
 
     [data-theme="light"] .theme-toggle {
       border-color: rgba(14,165,233,.3);
+      color: var(--accent);
     }
 
     .theme-toggle:hover {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(124,199,255,.1);
       transform: translateY(-1px);
+      color: var(--accent-2);
+    }
+
+    [data-theme="light"] .theme-toggle:hover {
+      box-shadow: 0 0 0 3px rgba(14,165,233,.1);
     }
 
     .theme-toggle:focus {
@@ -129,11 +135,17 @@
       box-shadow: 0 0 0 3px rgba(124,199,255,.2);
     }
 
+    [data-theme="light"] .theme-toggle:focus {
+      box-shadow: 0 0 0 3px rgba(14,165,233,.2);
+    }
+
     .theme-toggle::after {
-      content: var(--theme-icon);
+      content: var(--theme-icon-content);
       display: block;
       animation: none;
       transition: transform 0.3s ease;
+      font-weight: 400;
+      text-shadow: 0 0 8px currentColor;
     }
 
     .theme-toggle.switching::after {
@@ -230,7 +242,15 @@
     .micro { color: var(--muted); font-size: .9rem; margin-top: 8px; }
 
     /* Device Mock */
-    .mock { position: relative; aspect-ratio: 1/1; width: 100%; max-width: 440px; margin: 0 auto; }
+    .mock { 
+      position: relative; 
+      aspect-ratio: 1/1; 
+      width: 100%; 
+      max-width: 440px; 
+      margin: 0 auto; 
+      cursor: pointer;
+      user-select: none;
+    }
     
     .badge {
       position: relative;
@@ -245,9 +265,23 @@
       transition: all 0.3s ease;
     }
 
+    .badge:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 40px 100px rgba(0,0,0,.65), inset 0 0 0 1px rgba(160,208,255,.15);
+    }
+
+    .badge:active {
+      transform: translateY(0) scale(0.98);
+      transition: transform 0.1s ease;
+    }
+
     [data-theme="light"] .badge {
       border-color: rgba(14,165,233,.25);
       box-shadow: var(--shadow), inset 0 0 0 1px rgba(2,132,199,.1);
+    }
+
+    [data-theme="light"] .badge:hover {
+      box-shadow: 0 40px 100px rgba(0,0,0,.25), inset 0 0 0 1px rgba(2,132,199,.2);
     }
 
     .screen {
@@ -336,13 +370,146 @@
 
     /* Responsive */
     @media (max-width: 960px) {
-      .hero { grid-template-columns: 1fr; }
+      .hero { 
+        grid-template-columns: 1fr; 
+        gap: 28px;
+      }
+      
+      /* On mobile, show the product first for immediate visual impact */
+      .hero > div:last-child {
+        order: -1;
+      }
+      
+      .mock {
+        max-width: 320px;
+      }
     }
     
     @media (max-width: 720px) {
       .features { grid-template-columns: 1fr; }
-      .header-actions { flex-direction: column-reverse; gap: 8px; }
+      .header-actions { 
+        flex-direction: row; 
+        gap: 12px; 
+      }
       .theme-toggle { width: 38px; height: 38px; }
+      
+      .wrap { padding: 20px 16px; }
+      
+      /* Mobile-optimized hero */
+      .hero { 
+        gap: 24px; 
+        margin-top: 24px;
+      }
+      
+      h1 { 
+        font-size: clamp(2.2rem, 8vw, 3rem); 
+        text-align: center;
+        margin: .6rem 0 1rem;
+      }
+      
+      .kicker { 
+        text-align: center; 
+        font-size: .8rem;
+      }
+      
+      .sub { 
+        text-align: center; 
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .mock {
+        max-width: 280px;
+        margin: 1rem auto 2rem;
+      }
+      
+      .badge {
+        border-radius: 24px;
+      }
+      
+      /* Larger touch target for mobile */
+      .badge:hover {
+        transform: none;
+      }
+      
+      .badge:active {
+        transform: scale(0.95);
+        transition: transform 0.15s ease;
+      }
+      
+      /* Mobile-friendly features grid */
+      .features {
+        margin-top: 28px;
+        gap: 14px;
+      }
+      
+      .feat {
+        padding: 16px;
+        text-align: center;
+      }
+      
+      .waitlist {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .input, .btn {
+        width: 100%;
+        padding: 16px;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .mock {
+        max-width: 240px;
+      }
+      
+      .wrap {
+        padding: 16px 12px;
+      }
+      
+      header {
+        gap: 12px;
+      }
+      
+      .brand .wordmark {
+        font-size: 0.9rem;
+      }
+      
+      .cta a {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Mobile-specific enhancements */
+    @media (hover: none) and (pointer: coarse) {
+      .badge {
+        animation: subtlePulse 4s ease-in-out infinite;
+      }
+      
+      .badge:active {
+        animation: none;
+      }
+    }
+    
+    @keyframes subtlePulse {
+      0%, 100% { 
+        box-shadow: var(--shadow), inset 0 0 0 1px rgba(160,208,255,.08);
+      }
+      50% { 
+        box-shadow: var(--shadow), inset 0 0 0 1px rgba(160,208,255,.15);
+      }
+    }
+    
+    [data-theme="light"] @keyframes subtlePulse {
+      0%, 100% { 
+        box-shadow: var(--shadow), inset 0 0 0 1px rgba(2,132,199,.1);
+      }
+      50% { 
+        box-shadow: var(--shadow), inset 0 0 0 1px rgba(2,132,199,.2);
+      }
     }
 
     /* Reduced motion support */
@@ -464,10 +631,9 @@
       }
 
       init() {
-        // Check for saved theme preference or default to system preference
+        // Check for saved theme preference or default to dark mode
         const savedTheme = localStorage.getItem('glyph-theme');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+        const initialTheme = savedTheme || 'dark'; // Default to dark mode
         
         this.setTheme(initialTheme, false);
         this.bindEvents();
@@ -520,10 +686,11 @@
           }
         });
 
-        // Listen for system theme changes
+        // Listen for system theme changes (only if no saved preference)
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
           // Only auto-switch if user hasn't manually set a preference
-          if (!localStorage.getItem('glyph-theme')) {
+          const savedTheme = localStorage.getItem('glyph-theme');
+          if (!savedTheme) {
             this.setTheme(e.matches ? 'dark' : 'light');
           }
         });
@@ -590,15 +757,102 @@
       }
     }
 
-    // Animated glyph path via SMIL-ish fallback using setInterval
-    const morph = document.getElementById('morph');
-    const frames = [
-      'M50 20 L80 50 L50 80 L20 50 Z',                                    // diamond
-      'M50 20 L80 80 L20 80 Z',                                            // triangle
-      'M20 30 Q50 10 80 30 L80 70 Q50 90 20 70 Z'                          // capsule
+    // Mobile Product Interaction
+    const mockDevice = document.querySelector('.mock');
+    const badge = document.querySelector('.badge');
+    const glyphPath = document.getElementById('morph');
+    let isInteracting = false;
+
+    // Enhanced glyph animation frames
+    const interactiveFrames = [
+      'M50 20 L80 50 L50 80 L20 50 Z',                    // diamond
+      'M50 20 L80 80 L20 80 Z',                            // triangle  
+      'M20 30 Q50 10 80 30 L80 70 Q50 90 20 70 Z',        // capsule
+      'M30 30 L70 30 L70 70 L30 70 Z',                     // square
+      'M50 15 Q80 50 50 85 Q20 50 50 15 Z',               // leaf
     ];
+
+    // Regular automatic animation
+    const regularFrames = [
+      'M50 20 L80 50 L50 80 L20 50 Z',                    // diamond
+      'M50 20 L80 80 L20 80 Z',                            // triangle
+      'M20 30 Q50 10 80 30 L80 70 Q50 90 20 70 Z'         // capsule
+    ];
+    
     let f = 0;
-    setInterval(()=>{ f=(f+1)%frames.length; morph.setAttribute('d', frames[f]); }, 1600);
+    const regularAnimation = setInterval(() => {
+      if (!isInteracting) {
+        f = (f + 1) % regularFrames.length;
+        glyphPath.setAttribute('d', regularFrames[f]);
+      }
+    }, 1600);
+
+    // Add mobile-specific interaction
+    if (mockDevice) {
+      // Touch/click interaction for mobile
+      mockDevice.addEventListener('click', () => {
+        if (isInteracting) return;
+        
+        isInteracting = true;
+        
+        // Quick shape change animation
+        let currentFrame = 0;
+        const quickInterval = setInterval(() => {
+          glyphPath.setAttribute('d', interactiveFrames[currentFrame]);
+          currentFrame = (currentFrame + 1) % interactiveFrames.length;
+          
+          if (currentFrame === 0) {
+            clearInterval(quickInterval);
+            setTimeout(() => {
+              isInteracting = false;
+            }, 300);
+          }
+        }, 150);
+        
+        // Add tactile feedback with animation
+        badge.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+          badge.style.transform = '';
+        }, 150);
+      });
+
+      // Add visual feedback for interaction
+      const style = document.createElement('style');
+      style.textContent = `
+        .mock::after {
+          content: 'Tap to morph';
+          position: absolute;
+          bottom: -32px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-family: "JetBrains Mono", monospace;
+          font-size: 0.75rem;
+          color: var(--muted);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+        
+        @media (max-width: 720px) {
+          .mock::after {
+            opacity: 0.7;
+          }
+          
+          .mock:hover::after {
+            opacity: 1;
+            color: var(--accent);
+          }
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+          .mock::after {
+            opacity: 0.8;
+            color: var(--accent);
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
 
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
