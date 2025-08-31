@@ -48,10 +48,13 @@
     }
 
     * { box-sizing: border-box }
-    html, body { height: 100% }
+    html, body { 
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
     
     body {
-      margin: 0;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
       color: var(--text);
       background: radial-gradient(1200px 600px at 80% -10%, rgba(124,199,255,.15), transparent 60%),
@@ -59,6 +62,7 @@
                   var(--bg);
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
     }
 
     [data-theme="light"] body {
@@ -68,7 +72,12 @@
     }
 
     a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
-    .wrap { max-width: 1120px; margin: 0 auto; padding: 28px 22px; }
+    .wrap { 
+      max-width: 1120px; 
+      margin: 0 auto; 
+      padding: 28px 22px;
+      width: 100%;
+    }
 
     /* Header */
     header { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
@@ -195,10 +204,17 @@
       backdrop-filter: blur(3px);
     }
 
-    .waitlist { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .waitlist { 
+      display: flex; 
+      gap: 12px; 
+      margin-top: 18px; 
+      flex-wrap: wrap;
+      width: 100%;
+    }
     
     .input {
       flex: 1 1 260px;
+      min-width: 0;
       background: linear-gradient(180deg, var(--surface-2), var(--surface));
       color: var(--text);
       border: 1px solid rgba(124,199,255,.25);
@@ -393,18 +409,29 @@
       }
       .theme-toggle { width: 38px; height: 38px; }
       
-      .wrap { padding: 20px 16px; }
+      .wrap { 
+        padding: 20px 16px;
+        max-width: 100%;
+      }
       
       /* Mobile-optimized hero */
       .hero { 
         gap: 24px; 
         margin-top: 24px;
+        text-align: center;
+        width: 100%;
+      }
+      
+      .hero > div {
+        width: 100%;
+        max-width: 100%;
       }
       
       h1 { 
         font-size: clamp(2.2rem, 8vw, 3rem); 
         text-align: center;
         margin: .6rem 0 1rem;
+        word-wrap: break-word;
       }
       
       .kicker { 
@@ -416,6 +443,9 @@
         text-align: center; 
         font-size: 1.05rem;
         margin-bottom: 1.5rem;
+        max-width: 100%;
+        word-wrap: break-word;
+        line-height: 1.6;
       }
       
       .mock {
@@ -448,15 +478,50 @@
         text-align: center;
       }
       
-      .waitlist {
-        flex-direction: column;
-        gap: 10px;
+      /* Fix mobile form layout */
+      .card {
+        text-align: left;
+        max-width: 100%;
+        margin: 0 auto;
       }
       
-      .input, .btn {
+      .waitlist {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
         width: 100%;
-        padding: 16px;
+      }
+      
+      .input {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        padding: 14px 16px;
         font-size: 16px; /* Prevents zoom on iOS */
+        box-sizing: border-box;
+        min-width: 0;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        padding: 14px 18px;
+        font-size: 16px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      
+      .micro {
+        text-align: center;
+        font-size: .85rem;
+      }
+      
+      /* Center proof bubbles */
+      .proof {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
       }
     }
     
@@ -467,10 +532,12 @@
       
       .wrap {
         padding: 16px 12px;
+        margin: 0 auto;
       }
       
       header {
         gap: 12px;
+        justify-content: space-between;
       }
       
       .brand .wordmark {
@@ -480,6 +547,35 @@
       .cta a {
         padding: 8px 12px;
         font-size: 0.85rem;
+      }
+      
+      h1 {
+        font-size: clamp(1.8rem, 9vw, 2.5rem);
+      }
+      
+      .sub {
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      
+      /* Ensure form elements are properly sized */
+      .input, .btn {
+        padding: 12px 16px;
+        border-radius: 12px;
+      }
+      
+      .card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+      
+      .bubble {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+      }
+      
+      .proof {
+        gap: 8px;
       }
     }
 
